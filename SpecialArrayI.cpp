@@ -1,5 +1,4 @@
-// date-01-02-2025
-// https://leetcode.com/problems/special-array-i/description/
+
 class Solution {
 public:
     bool isArraySpecial(vector<int>& nums) {
