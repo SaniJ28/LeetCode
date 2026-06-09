@@ -11,47 +11,33 @@ public:
                 }
             }
         }
-        int len=dp[n][m];
 		int i=n,j=m;
-		int index=len;
 		string ans="";
-		for(int i=0;i<len;i++) ans=ans+'$';
-		while(i>0&&j>0){
+		while(i>0 && j>0){
 			if(text1[i-1]==text2[j-1]){
-				ans[index-1]=text1[i-1];
-				index--;
+				ans+=text1[i-1];
 				i--;
 				j--;
 			}
-			else if(dp[i-1][j]>dp[i][j-1])i--;
-			else j--;
+			else if(dp[i-1][j]>dp[i][j-1]){
+                ans+=text1[i-1];
+                i--;
+            }
+			else {
+                ans+=text2[j-1];
+                j--;
+            }
 		}
-		string sup="";
-        int ind1=0,ind2=0,p=0;
-        while(ind1<n && ind2<m && p<len){
-            while(ind1<n && ans[p]!=text1[ind1]){
-                sup+=text1[ind1];
-                ind1++;
+
+        while(i>0){
+                ans+=text1[i-1];
+                i--;
             }
-            while(ind2<m && ans[p]!=text2[ind2]){
-                sup+=text2[ind2];
-                ind2++;
+        while(j>0){
+                ans+=text2[j-1];
+                j--;
             }
-            if(ind1<n && ind2<m && p<len && text1[ind1]==ans[p] && text2[ind2]==ans[p]){
-                sup+=ans[p];
-                p++;
-                ind1++;
-                ind2++;
-            }
-        }
-            while(ind1<n){
-                sup+=text1[ind1];
-                ind1++;
-            }
-            while(ind2<m){
-                sup+=text2[ind2];
-                ind2++;
-            }
-    return sup;
+            reverse(ans.begin(),ans.end());
+            return ans;
     }
 };
