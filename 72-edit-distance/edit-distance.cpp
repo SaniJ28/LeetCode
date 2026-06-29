@@ -1,14 +1,14 @@
 class Solution {
 public:
-    int edit(string word1, string word2, int i,int j, vector<vector<int>>& dp){
-        if(i==0)return j;
-        if(j==0) return i;
-        if(dp[i][j]!=-1) return dp[i][j];
-        if(word1[i-1]==word2[j-1]) {
-            return dp[i][j]= (0 + edit(word1,word2, i-1,j-1,dp));
-        }
-        return dp[i][j] =(1+ min(edit(word1,word2, i-1,j-1,dp),min(edit(word1,word2, i,j-1,dp),edit(word1,word2, i-1,j,dp))));
-    }
+    // int edit(string word1, string word2, int i,int j, vector<vector<int>>& dp){
+    //     if(i==0)return j;
+    //     if(j==0) return i;
+    //     if(dp[i][j]!=-1) return dp[i][j];
+    //     if(word1[i-1]==word2[j-1]) {
+    //         return dp[i][j]= (0 + edit(word1,word2, i-1,j-1,dp));
+    //     }
+    //     return dp[i][j] =(1+ min(edit(word1,word2, i-1,j-1,dp),min(edit(word1,word2, i,j-1,dp),edit(word1,word2, i-1,j,dp))));
+    // }
     int minDistance(string word1, string word2) {
         int n=word1.length();
         int m=word2.length();
