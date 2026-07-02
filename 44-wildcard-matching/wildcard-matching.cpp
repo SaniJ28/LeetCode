@@ -23,26 +23,50 @@ public:
     bool isMatch(string s, string p) {
         int n=s.length();
         int m=p.length();
-        vector<vector<bool>> dp(n+1,vector<bool>(m+1,false));
+        // vector<vector<bool>> dp(n+1,vector<bool>(m+1,false));
+        vector<bool>cur(m+1,false),prev(m+1,false);
         // return func(s,p,n-1,m-1,dp);
-        dp[0][0]=true;
-        for(int ind1=1;ind1<=n;ind1++)dp[ind1][0]=false;
+        prev[0]=true;
+        cur[0]=false;
         for(int ind2=1;ind2<=m;ind2++){
             if(p[ind2-1]!='*'){
-                dp[0][ind2]=false;
+                prev[ind2]=false;
                 break;
             }
-            dp[0][ind2]=true;
+            prev[ind2]=true;
         }
         for(int ind1=1;ind1<=n;ind1++){
             for(int ind2=1;ind2<=m;ind2++){
                 if(s[ind1-1]==p[ind2-1] || p[ind2-1]=='?'){
-                    dp[ind1][ind2]=dp[ind1-1][ind2-1];
+                    cur[ind2]=prev[ind2-1];
                 }
-                else if(p[ind2-1]=='*') dp[ind1][ind2]=dp[ind1-1][ind2] || dp[ind1][ind2-1];
-                else dp[ind1][ind2]=false;
+                else if(p[ind2-1]=='*') cur[ind2]=prev[ind2] || cur[ind2-1];
+                else cur[ind2]=false;
             }
+            prev=cur;
         }
-        return dp[n][m];        
+        return prev[m];
+
+
+        // dp[0][0]=true;
+        // for(int ind1=1;ind1<=n;ind1++)dp[ind1][0]=false;
+        // for(int ind2=1;ind2<=m;ind2++){
+        //     if(p[ind2-1]!='*'){
+        //         dp[0][ind2]=false;
+        //         break;
+        //     }
+        //     dp[0][ind2]=true;
+        // }
+        // for(int ind1=1;ind1<=n;ind1++){
+        //     for(int ind2=1;ind2<=m;ind2++){
+        //         if(s[ind1-1]==p[ind2-1] || p[ind2-1]=='?'){
+        //             dp[ind1][ind2]=dp[ind1-1][ind2-1];
+        //         }
+        //         else if(p[ind2-1]=='*') dp[ind1][ind2]=dp[ind1-1][ind2] || dp[ind1][ind2-1];
+        //         else dp[ind1][ind2]=false;
+        //     }
+        // }
+        // return dp[n][m];        
+
         }
 };
