@@ -5,5 +5,5 @@ select
 from 
     activity
 where 
-    datediff('2019-07-27',activity_date) <30 and datediff('2019-07-27',activity_date)>=0
-group by 1
+    activity_date BETWEEN '2019-06-28' AND '2019-07-27'
+group by day
