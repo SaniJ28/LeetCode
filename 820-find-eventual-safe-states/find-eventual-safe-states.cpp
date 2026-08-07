@@ -4,7 +4,6 @@ public:
              vector<int>& safe) {
         vis[node] = 1;
         path[node] = 1;
-        safe[node] = 0;
         for (int it : graph[node]) {
             if (vis[it] == 0) {
                 if (dfs(it, graph, vis, path, safe) == true) {
