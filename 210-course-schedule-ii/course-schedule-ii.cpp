@@ -12,7 +12,7 @@ public:
         for(int i=0;i<n;i++){
             int n1=prerequisites[i][0];
             int n2=prerequisites[i][1];
-            adj[n1].push_back(n2);
+            adj[n2].push_back(n1);
         }
         vector<int>indegree(numCourses,0),topo;
         queue<int>q;
@@ -36,7 +36,7 @@ public:
             }
         }
         if(topo.size()!=numCourses)return{};
-        reverse(topo.begin(),topo.end());
+        // reverse(topo.begin(),topo.end());
         return topo;
     }
 };
