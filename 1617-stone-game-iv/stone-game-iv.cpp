@@ -1,17 +1,29 @@
 class Solution {
 public:
-    static constexpr int MAX = 100000;
-    inline static bitset<MAX + 1> dp;
+    bool winnerSquareGame(int n) {
 
-    inline static bool init = []() {
-        for (int i = 0; i <= MAX; i++) {
-            if (dp.test(i)) continue;
-            for (int j = 1; j * j <= MAX - i; j++)
-                dp.set(i + j * j);
+        vector<bool>dp(n+1);
+
+        for (int i = 0; i <= n; i++) {
+
+            // If i is a losing position,
+            // every valid square move from i
+            // creates a winning position.
+            if (!dp[i]) {
+
+                for (int j = 1; i + j * j <= n; j++) {
+                    dp[i + j * j] = true;
+                }
+
+                // Once n becomes reachable from a losing position,
+                // the first player can force a win.
+                if (dp[n]) {
+                    return true;
+                }
+            }
         }
-        
-        return false;
-    }();
 
-    bool winnerSquareGame(int n) { return dp.test(n); }
+        return false;
+        
+    }
 };
