@@ -1,42 +1,55 @@
 class Solution {
-public:
-    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
-        int n=prerequisites.size();
-        if(numCourses==1)return {0};
-        vector<int>order;
-        if(n==0){
-            for(int i=0;i<numCourses;i++)order.push_back(i);
-            return order;
-        }
-        vector<vector<int>>adj(numCourses);
-        for(int i=0;i<n;i++){
-            int n1=prerequisites[i][0];
-            int n2=prerequisites[i][1];
-            adj[n2].push_back(n1);
-        }
-        vector<int>indegree(numCourses,0),topo;
-        queue<int>q;
-        for(int i=0;i<numCourses;i++){
-            for(int it: adj[i]){
-                indegree[it]++;
+private:
+    bool dfs(int node, vector<vector<int>>& adj, vector<int>& vis, vector<int>& path, vector<int>& order) {
+        vis[node] = 1;     // Mark as visited
+        path[node] = 1;    // Add to the current recursion path
+
+        for (int neighbor : adj[node]) {
+            // If the neighbor is in the current path, we found a cycle!
+            if (path[neighbor] == 1) {
+                return false; 
             }
-        }
-        for(int i=0;i<numCourses;i++){
-            if(indegree[i]==0)q.push(i);
-        }
-        while(!q.empty()){
-            int node=q.front();
-            q.pop();
-            topo.push_back(node);
-            for(int it: adj[node]){
-                indegree[it]--;
-                if(indegree[it]==0){
-                    q.push(it);
+            // If the neighbor is unvisited, recurse
+            if (vis[neighbor] == 0) {
+                if (!dfs(neighbor, adj, vis, path, order)) {
+                    return false;
                 }
             }
         }
-        if(topo.size()!=numCourses)return{};
-        // reverse(topo.begin(),topo.end());
-        return topo;
+
+        path[node] = 0;          // Remove from current recursion path
+        order.push_back(node);   // Push to our topological sort array
+        return true;
+    }
+
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<vector<int>> adj(numCourses);
+        
+        // Build the adjacency list (Direction: prerequisite -> course)
+        for (int i = 0; i < prerequisites.size(); i++) {
+            int course = prerequisites[i][0];
+            int prereq = prerequisites[i][1];
+            adj[prereq].push_back(course); 
+        }
+
+        vector<int> vis(numCourses, 0);
+        vector<int> path(numCourses, 0);
+        vector<int> order;
+
+        // Run DFS for every unvisited node
+        for (int i = 0; i < numCourses; i++) {
+            if (vis[i] == 0) {
+                // If a cycle is detected, return an empty array
+                if (!dfs(i, adj, vis, path, order)) {
+                    return {};
+                }
+            }
+        }
+
+        // The courses are added during the backtracking phase, 
+        // so they are in reverse topological order. We must reverse them.
+        reverse(order.begin(), order.end());
+        return order;
     }
 };
