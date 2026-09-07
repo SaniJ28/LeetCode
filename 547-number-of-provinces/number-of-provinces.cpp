@@ -29,17 +29,18 @@ public:
     int findCircleNum(vector<vector<int>>& isConnected) {
         vector<pair<int,int>>edges;
         int n=isConnected.size();
+        DSU dsu(n);
         for(int i=0;i<n;i++){
-            for(int j=i+1;j<n;j++){
-                if(isConnected[i][j]==1)edges.push_back({i,j});
+            for(int j=0;j<n;j++){
+                if(isConnected[i][j]==1)dsu.unionBySize(i,j);
             }
         }
-        DSU dsu(n);
-        for(auto it: edges){
-            int u=it.first;
-            int v=it.second;
-            dsu.unionBySize(u,v);
-        }
+       
+        // for(auto it: edges){
+        //     int u=it.first;
+        //     int v=it.second;
+        //     dsu.unionBySize(u,v);
+        // }
         int count=0;
         for(int i=0;i<n;i++){
             if(dsu.parent[i]==i)count++;
